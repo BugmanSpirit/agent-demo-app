@@ -34,7 +34,6 @@ def fastapi_app():
 
     PARALLEL_API_URL = "https://api.parallel.ai/v1beta/search"
     GEMINI_MODEL = "gemini-2.5-flash"
-    MAX_SEARCH_STEPS = 25
 
     SEARCH_TOOL_DESCRIPTION = """# Web Search Tool
 
@@ -145,9 +144,6 @@ After doing the searches required, write up your 'search report' that answers th
 
         for next_chunk in next_response:
             step_count += 1
-            if step_count >= MAX_SEARCH_STEPS:
-                yield f"data: {json.dumps({'type': 'finish', 'finishReason': 'max_steps'})}\n\n"
-                break
 
             if next_chunk.candidates and next_chunk.candidates[0].content.parts:
                 for next_part in next_chunk.candidates[0].content.parts:
@@ -200,10 +196,6 @@ After doing the searches required, write up your 'search report' that answers th
 
             for chunk in response:
                 step_count += 1
-
-                if step_count >= MAX_SEARCH_STEPS:
-                    yield f"data: {json.dumps({'type': 'finish', 'finishReason': 'max_steps'})}\n\n"
-                    break
 
                 if chunk.candidates and chunk.candidates[0].content.parts:
                     for part in chunk.candidates[0].content.parts:
