@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI ReSearch Agent</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="min-h-screen transition-colors duration-300">
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
+            <div class="container mx-auto px-4 py-4 flex items-center justify-between max-w-5xl">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">AI ReSearch Agent</h1>
+                        <p class="text-xs text-muted-foreground">Powered by Gemini and Parallel Search</p>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="p-2 rounded-lg hover:bg-accent transition-colors">
+                    <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 container mx-auto px-4 py-8 max-w-5xl">
+            <!-- Search Interface -->
+            <div id="search-interface" class="space-y-6">
+                <div class="text-center space-y-4 py-12">
+                    <h2 class="text-4xl font-bold bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">
+                        What would you like to research?
+                    </h2>
+                    <p class="text-muted-foreground max-w-2xl mx-auto">
+                        Ask anything and watch as the AI agent searches the web, analyzes information, and provides comprehensive answers in real-time.
+                    </p>
+                </div>
+
+                <div class="relative max-w-3xl mx-auto">
+                    <div class="relative flex items-center gap-2 p-2 bg-card border border-border rounded-2xl shadow-lg focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent transition-all">
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            placeholder="Ask me anything..."
+                            class="flex-1 px-4 py-3 bg-transparent focus:outline-none text-lg"
+                        >
+                        <button 
+                            id="search-btn"
+                            class="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-medium transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <span>Search</span>
+                        </button>
+                    </div>
+                    <button id="config-btn" class="mt-4 mx-auto block text-sm text-muted-foreground hover:text-foreground underline transition-colors">
+                        Configure System Prompt
+                    </button>
+                </div>
+
+                <!-- Example Queries -->
+                <div class="max-w-3xl mx-auto">
+                    <p class="text-sm text-muted-foreground mb-3">Try these examples:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="example-query px-4 py-2 bg-accent hover:bg-accent/80 rounded-lg text-sm transition-colors">
+                            Latest AI breakthroughs in 2025
+                        </button>
+                        <button class="example-query px-4 py-2 bg-accent hover:bg-accent/80 rounded-lg text-sm transition-colors">
+                            Best practices for Python async programming
+                        </button>
+                        <button class="example-query px-4 py-2 bg-accent hover:bg-accent/80 rounded-lg text-sm transition-colors">
+                            Climate change solutions being implemented
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Interface -->
+            <div id="results-interface" class="hidden space-y-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-bold">Research Results</h2>
+                    <button 
+                        id="new-search-btn"
+                        class="px-4 py-2 bg-accent hover:bg-accent/80 rounded-lg transition-colors flex items-center gap-2"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        New Search
+                    </button>
+                </div>
+
+                <div id="results-content" class="space-y-4">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="hidden text-center py-12">
+                <div class="inline-flex items-center gap-3 px-6 py-4 bg-card border border-border rounded-2xl">
+                    <div class="w-6 h-6 border-3 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-muted-foreground">Researching your query...</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-border py-6 mt-auto">
+            <div class="container mx-auto px-4 text-center text-sm text-muted-foreground max-w-5xl">
+                <p>                    <a href="https://github.com/BugmanSpirit/agent-demo-app" target="_blank" class="text-primary-500 hover:underline">View on GitHub</a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Config Modal -->
+    <div id="config-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+        <div class="bg-card border border-border rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl animate-slide-up">
+            <h3 class="text-xl font-bold mb-4">System Prompt Configuration</h3>
+            <textarea 
+                id="system-prompt"
+                class="w-full h-48 p-4 bg-background border border-border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="Enter custom system prompt..."
+            ></textarea>
+            <div class="flex justify-end gap-3 mt-4">
+                <button 
+                    id="cancel-config"
+                    class="px-4 py-2 bg-accent hover:bg-accent/80 rounded-lg transition-colors"
+                >
+                    Cancel
+                </button>
+                <button 
+                    id="save-config"
+                    class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors"
+                >
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
